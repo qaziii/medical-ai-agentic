@@ -14,11 +14,6 @@ from langchain_core.runnables import RunnablePassthrough
 from langgraph.graph import MessagesState, StateGraph, END
 import os, getpass
 from dotenv import load_dotenv
-from agents.rag_agent import MedicalRAG
-from agents.web_search_processor_agent import WebSearchProcessorAgent
-from agents.image_analysis_agent import ImageAnalysisAgent
-from agents.guardrails.local_guardrails import LocalGuardrails
-
 from langgraph.checkpoint.memory import MemorySaver
 
 import cv2
@@ -36,6 +31,31 @@ memory = MemorySaver()
 
 # Specify a thread
 thread_config = {"configurable": {"thread_id": "1"}}
+
+# Global variables for lazy loading
+_agents_cache = {}
+
+def get_agent(agent_type: str):
+    """Lazy load agents only when needed."""
+    if agent_type not in _agents_cache:
+        print(f"Loading {agent_type} agent...")
+        
+        if agent_type == "image_analyzer":
+            from agents.image_analysis_agent import ImageAnalysisAgent
+            _agents_cache[agent_type] = ImageAnalysisAgent(config=config)
+        elif agent_type == "rag_agent":
+            from agents.rag_agent import MedicalRAG
+            _agents_cache[agent_type] = MedicalRAG(config=config)
+        elif agent_type == "web_search_agent":
+            from agents.web_search_processor_agent import WebSearchProcessorAgent
+            _agents_cache[agent_type] = WebSearchProcessorAgent(config=config)
+        elif agent_type == "guardrails":
+            from agents.guardrails.local_guardrails import LocalGuardrails
+            _agents_cache[agent_type] = LocalGuardrails(config.rag.llm)
+        else:
+            raise ValueError(f"Unknown agent type: {agent_type}")
+    
+    return _agents_cache[agent_type]
 
 
 # Agent that takes the decision of routing the request further to correct task specific agent
@@ -79,7 +99,7 @@ class AgentConfig:
     }}
     """
 
-    image_analyzer = ImageAnalysisAgent(config=config)
+    # Agents are now loaded lazily via get_agent() function
 
 
 class AgentState(MessagesState):
@@ -157,7 +177,8 @@ def create_agent_graph():
         if isinstance(current_input, dict) and "image" in current_input:
             has_image = True
             image_path = current_input.get("image", None)
-            image_type_response = AgentConfig.image_analyzer.analyze_image(image_path)
+            image_analyzer = get_agent("image_analyzer")
+            image_type_response = image_analyzer.analyze_image(image_path)
             image_type = image_type_response['image_type']
             print("ANALYZED IMAGE TYPE: ", image_type)
         

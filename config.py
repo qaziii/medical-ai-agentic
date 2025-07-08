@@ -35,7 +35,7 @@ class AgentDecisoinConfig:
             base_url=OPENROUTER_BASE_URL,
             temperature=0.1,  # Deterministic
             default_headers={
-                "HTTP-Referer": "http://localhost:8000",
+                "HTTP-Referer": "https://medical-ai-agentic.fly.dev",
                 "X-Title": "Medical Assistant"
             }
         )
@@ -160,7 +160,8 @@ class ValidationConfig:
 class APIConfig:
     def __init__(self):
         self.host = "0.0.0.0"
-        self.port = int(os.getenv("PORT", 8001))  # Use Railway's PORT or default to 8001
+        # Fly.io uses PORT environment variable
+        self.port = int(os.getenv("PORT", 8001))
         self.debug = os.getenv("DEBUG", "False").lower() == "true"  # Disable debug in production
         self.rate_limit = 10
         self.max_image_upload_size = 5  # max upload size in MB
