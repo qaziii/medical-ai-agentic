@@ -1,31 +1,40 @@
-# Git and version control
+# Git
 .git
 .gitignore
-.github
-
-# Documentation
-README.md
-*.md
-docs/
+.gitattributes
 
 # Python
-__pycache__
-*.pyc
-*.pyo
-*.pyd
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
 .Python
-env
-pip-log.txt
-pip-delete-this-directory.txt
-.venv
-venv/
-.env.local
-.env.development
-.env.test
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# IDEs
-.vscode
-.idea
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
 *.swp
 *.swo
 *~
@@ -34,34 +43,52 @@ venv/
 .DS_Store
 Thumbs.db
 
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+
+# Documentation
+docs/
+README.md
+LICENSE
+*.md
+
+# Sample files (if not needed in production)
+sample_images/
+test_images/
+
+# Jupyter notebooks
+*.ipynb
+.ipynb_checkpoints
+
 # Logs
 *.log
 logs/
 
-# Testing
-.pytest_cache
-.coverage
-htmlcov/
+# Cache
+.cache/
+.mypy_cache/
+.pytest_cache/
+
+# Large model files that can be downloaded
+# Comment out if models are essential
+# agents/image_analysis_agent/*/models/*.pth*
+
+# Development files
+requirements-dev.txt
+requirements-test.txt
+Dockerfile.*
+docker-compose*
 
 # Node modules (if any)
-node_modules
-npm-debug.log*
+node_modules/
 
 # Temporary files
-.tmp
-temp/
 tmp/
-
-# Railway
-.railway
-
-# Data that shouldn't be in container
-data/qdrant_db/
-data/docs_db/
-uploads/backend/
-uploads/frontend/
-
-# Videos and large assets
-*.mp4
-*.avi
-*.mov 
+temp/
+*.tmp
+*.temp 
