@@ -1,0 +1,67 @@
+# Git and version control
+.git
+.gitignore
+.github
+
+# Documentation
+README.md
+*.md
+docs/
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+pip-log.txt
+pip-delete-this-directory.txt
+.venv
+venv/
+.env.local
+.env.development
+.env.test
+
+# IDEs
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Testing
+.pytest_cache
+.coverage
+htmlcov/
+
+# Node modules (if any)
+node_modules
+npm-debug.log*
+
+# Temporary files
+.tmp
+temp/
+tmp/
+
+# Railway
+.railway
+
+# Data that shouldn't be in container
+data/qdrant_db/
+data/docs_db/
+uploads/backend/
+uploads/frontend/
+
+# Videos and large assets
+*.mp4
+*.avi
+*.mov 
